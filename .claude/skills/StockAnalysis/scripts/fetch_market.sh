@@ -11,6 +11,8 @@ if [ -f "$SKILL_DIR/.env" ]; then
 fi
 
 "$PYTHON_BIN" - "$@" <<'PY'
+import contextlib
+import io
 import json
 import os
 import sys
@@ -23,7 +25,7 @@ import yfinance as yf
 
 MARKETS = {
     'us': [('^GSPC', 'S&P 500'), ('^IXIC', 'NASDAQ'), ('^DJI', 'Dow Jones')],
-    'hk': [('^HSI', 'Hang Seng'), ('^HSCE', 'HSCEI'), ('^HSCCI', 'Hang Seng Composite')],
+    'hk': [('^HSI', 'Hang Seng'), ('^HSCE', 'HSCEI')],
 }
 
 CN_INDEXES = [
@@ -130,8 +132,9 @@ def fetch_indexes_cn():
 def fetch_index_yfinance(symbol, label):
     base = {'symbol': symbol, 'name': label, 'latest_price': None, 'change_pct': None}
     try:
-        ticker = yf.Ticker(symbol)
-        hist = ticker.history(period='5d', interval='1d', auto_adjust=False, actions=False)
+        with contextlib.redirect_stderr(io.StringIO()):
+            ticker = yf.Ticker(symbol)
+            hist = ticker.history(period='5d', interval='1d', auto_adjust=False, actions=False)
         if hist is None or hist.empty:
             raise RuntimeError('empty history from yfinance')
         closes = [float(v) for v in hist['Close'].dropna().tolist()]
@@ -142,7 +145,8 @@ def fetch_index_yfinance(symbol, label):
             change_pct = round((latest - prev) / prev * 100, 4)
         info = {}
         try:
-            info = ticker.info or {}
+            with contextlib.redirect_stderr(io.StringIO()):
+                info = ticker.info or {}
         except Exception:
             info = {}
         base.update({
