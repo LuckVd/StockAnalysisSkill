@@ -1,0 +1,13 @@
+[project]
+name = "stockanalysis-skill"
+version = "0.1.0"
+description = "StockAnalysis skill runtime dependencies"
+requires-python = ">=3.10"
+dependencies = [
+  "yfinance>=0.2.0",
+  "python-dotenv>=1.0.0",
+  "akshare>=1.17.0",
+]
+
+[tool.uv]
+package = false

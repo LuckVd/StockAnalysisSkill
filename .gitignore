@@ -1,0 +1,18 @@
+# Local secrets
+.claude/settings.local.json
+.claude/skills/StockAnalysis/.env
+.claude/skills/StockAnalysis/.env.*.local
+
+# Local runtime
+.claude/skills/StockAnalysis/.venv/
+
+# Python cache
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# OS / editor
+.DS_Store
+.idea/
+.vscode/
