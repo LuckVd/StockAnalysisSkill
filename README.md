@@ -11,7 +11,6 @@
 
 ## 项目结构
 
-- `main.py`：兼容入口，将旧式 `main.py market ...` / `main.py stock ...` 调用转发到 skill 主入口
 - `.claude/skills/StockAnalysis/SKILL.md`：skill 说明
 - `.claude/skills/StockAnalysis/scripts/run.sh`：统一入口脚本
 - `.claude/skills/StockAnalysis/scripts/fetch_quotes.sh`：个股行情抓取
@@ -52,29 +51,20 @@
 ### 查看状态
 
 ```bash
-python3 main.py status
-python3 main.py status --doctor
+bash .claude/skills/StockAnalysis/scripts/run.sh doctor
 ```
 
 ### 市场复盘
 
 ```bash
-python3 main.py market --market A
-python3 main.py market --market cn
-python3 main.py market --market us
+bash .claude/skills/StockAnalysis/scripts/run.sh market cn
+bash .claude/skills/StockAnalysis/scripts/run.sh market us
+bash .claude/skills/StockAnalysis/scripts/run.sh market hk
 ```
 
 ### 单股分析
 
 ```bash
-python3 main.py stock --symbol 002594 --market A
-python3 main.py stock --symbol AAPL --market us
-```
-
-### 直接调用 skill 入口
-
-```bash
-bash .claude/skills/StockAnalysis/scripts/run.sh market cn
 bash .claude/skills/StockAnalysis/scripts/run.sh stock 002594 cn
 bash .claude/skills/StockAnalysis/scripts/run.sh stock AAPL us
 ```
